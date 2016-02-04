@@ -19,7 +19,8 @@ $default = "server";
 
 $stage = 0;
 $message = "";
-	
+
+
 // Different default selected
 if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 	$default = $_GET['default'];
@@ -76,6 +77,7 @@ else if(isset($_GET['shutdown'])) {
 // The selected computer is turned off
 else if(isset($_GET['turned-off'])) {
 	$message = "The computer is turned off or is not reachable.";
+	$stage = 0;
 }
 
 
@@ -87,14 +89,12 @@ $selected = $list[$default];
 
 if($message == "") $message = "&nbsp;";
 
-$actionURL = "";
-switch($stage) {
-	case 0: $actionURL = "?wakeup&default=$default"; break;
-	case 1: $actionURL = "#"; break;
-	case 2: $actionURL = "?open&default=$default"; break;
-	case 3: $actionURL = "?shutdown&default=$default"; break;
-	default: $actionURL = "#";
-}
+
+$actionsURL = array(
+	"?wakeup&default=$default",
+	"#",
+	"?open&default=$default",
+	"?shutdown&default=$default");
 
 ?>
 <!-- saved from url=(0014)about:internet -->
@@ -230,7 +230,7 @@ switch($stage) {
 						
 						<div class="power-button">
 							<canvas></canvas>
-							<a class="gray" href="<?php echo $actionURL; ?>">
+							<a class="gray" href="<?php echo $actionsURL[$stage]; ?>">
 								<p class="lead">Power On</p>
 								<p class="counter"></p>
 							</a>
@@ -257,8 +257,13 @@ switch($stage) {
 
 		
 		<script type="text/javascript">
-			var openLink = "<?php echo $list[$default][3]; ?>";
-			var wakeupTime = <?php echo $list[$default][4]; ?> * 10;
+			var hasPowerOn = <?php echo (($list[$default][1]) ? "true" : "false"); ?>;
+			var hasShutdown = <?php echo (isset($list[$default][2]) ? "true" : "false"); ?>;
+			var hasOpen = <?php echo (isset($list[$default][3]) ? "true" : "false"); ?>;
+			var hasTurningOn = <?php echo (isset($list[$default][4]) ? "true" : "false"); ?>;
+			
+			var actionsURL = ["<?php echo implode('", "', $actionsURL); ?>"];
+			var wakeupTime = <?php echo (isset($list[$default][4]) ? $list[$default][4] : 0); ?> * 1000;
 			var stage = <?php echo $stage; ?>;
 			var context;
 			
@@ -296,9 +301,10 @@ switch($stage) {
 				}, 75);
 			}
 			
-			function setStage(value, lead, background = "gray", counter = "", drawArc = false) {
+			function setStage(value, lead, background = "gray", counter = "", drawArc = false, updateHref = true) {
 				$(".power-button .lead").html(lead);
 				$(".power-button a").attr("class", background);
+				if(updateHref) $(".power-button a").attr("href", actionsURL[value]);
 				$(".power-button a").removeAttr("target", "_blank");
 				$(".power-button .counter").html(counter);
 				
@@ -313,20 +319,22 @@ switch($stage) {
 			}
 			
 			function powerOn() {
+				if(!hasPowerOn) { turningOn(); hasPowerOn= true; return; }
 				setStage(0, "Power On", "gray");
 			}
 			function turningOn(animate = true) {
-				setStage(1, "Turning On", "red", "Loading...")
-				if(animate) runAnimation(wakeupTime, open);
+				if(!hasTurningOn || !hasPowerOn) { openLink(); return; }
+				setStage(1, "Turning On", "red", "Loading...", false, false);
+				if(animate) runAnimation(wakeupTime, openLink);
 			}
-			function open() {
+			function openLink() {
+				if(!hasOpen) { shutdown(); return; }
 				setStage(2, "Open", "green", "", true);
-				$(".power-button a").attr("href", openLink);
 				$(".power-button a").attr("target", "_blank");
 			}
 			function shutdown() {
+				if(!hasShutdown) { powerOn(); return; }
 				setStage(3, "Shutdown", "red", "", true);
-				$(".power-button a").attr("href", "?shutdown");
 			}
 			
 			window.onload = function() {
@@ -341,16 +349,19 @@ switch($stage) {
 					default:
 					case 0: powerOn(); break;
 					case 1: turningOn(); break;
-					case 2: open(); break;
+					case 2: openLink(); break;
 					case 3: shutdown(); break;
 				}
 				
 				$(".power-button a").click(function() {
 					$(".message").html("&nbsp;");
 					switch(stage) {
-						case 0: turningOn(false); break;
+						case 0:
+							if(hasTurningOn)
+								turningOn(false);
+							break;
 						case 2:
-							window.open($(".power-button a").attr("href"));
+							window.open($(".power-button a").attr("href"), "_blank");
 							shutdown();
 							return false;
 						case 3:
