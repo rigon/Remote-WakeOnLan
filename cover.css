@@ -1,0 +1,206 @@
+/*
+ * Globals
+ */
+
+.power-button .lead {
+	text-transform: uppercase;
+}
+
+.text-smallcaps {
+    font-variant: small-caps;
+}
+.message {
+	cursor: pointer;
+	margin-bottom: 100px;
+	color: #fff; /* IE8 proofing */
+	color: rgba(255,255,255,.75);
+	
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 700px;
+	display: inline-block
+}
+.message:hover {
+	color: #fff;
+}
+@media (max-width: 768px) {
+	.message {
+		width: 300px;
+	}
+}
+		
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus,
+.dropdown-menu {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+  background-color: #333;
+}
+body {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+  display: inline-block;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a,
+.masthead-nav > li > .btn-group {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus,
+.masthead-nav > li > .btn-group:hover,
+.masthead-nav > li > .btn-group:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+
+.masthead-nav > li > .btn-group > a,
+.masthead-nav > li > .btn-group > .btn {
+	color: #fff; /* IE8 proofing */
+	color: rgba(255,255,255,.75);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: transparent;
+	border: none;
+	text-decoration: none;
+}
+
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus,
+.masthead-nav > .active > .btn-group,
+.masthead-nav > .active > .btn-group:hover,
+.masthead-nav > .active > .btn-group:focus,
+.masthead-nav > .active > .btn-group > .btn,
+.masthead-nav > .active > .btn-group > .btn:hover,
+.masthead-nav > .active > .btn-group > .btn:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+}
+
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+    margin-top: 160px;
+  }
+  
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+
