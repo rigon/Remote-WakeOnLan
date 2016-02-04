@@ -7,11 +7,10 @@ define('WAKEUP_COMMAND', 'sleep 2s #wakeonlan %s');
  * id => array(name, MAC address, shutdown command, open address, poweron time)
  */
 $list = array(
-	"server"	=> array("Servidor", "00:02:b3:46:8a:ea", "ssh poweroff@server.home", "http://server.sgrg.tk", 65),
-	"piv"		=> array("PIV", "00:0B:6A:17:56:52", null, "ls"),
-	"amd"		=> array("AMD", "00:0C:6E:5A:D0:F2"),
-	"new"		=> array("New", null, "sleep 2s", null, 10),
-	"nop"		=> array("Nop")
+	"name"		=> array("Name", "mac address", "command to shutdown", "open url", intval("wakeup time")),
+	"pc2"		=> array("PC2", "mac address", null, "only with open url"),
+	"pc3"		=> array("PC3", "only mac address"),
+	"nothing"	=> array("Nothing")
 );
 
 $default = "server";
