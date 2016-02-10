@@ -21,4 +21,4 @@ Format:
 ## Note about shutdown command
 We recommend use a SSH connection to shutdown the remote
 computer. This requires some setup to make it work, but fortunatly you can find the
-information that you need here: http://www.rigon.tk/documentation/remote-pc-startupshutdown
+information that you need in [Remote PC Startup/Shutdown](http://www.rigon.tk/documentation/remote-pc-startupshutdown)
