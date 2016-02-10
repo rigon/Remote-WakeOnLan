@@ -7,10 +7,11 @@ define('WAKEUP_COMMAND', 'sleep 2s #wakeonlan %s');
  * id => array(name, MAC address, shutdown command, open address, poweron time)
  */
 $list = array(
-	"name"		=> array("Name", "mac address", "command to shutdown", "open url", intval("wakeup time")),
-	"pc2"		=> array("PC2", "mac address", null, "only with open url"),
-	"pc3"		=> array("PC3", "only mac address"),
-	"nothing"	=> array("Nothing")
+	"server"	=> array("Servidor", "00:02:b3:46:8a:ea", "ssh poweroff@server.home", "http://server.sgrg.tk", 65),
+	"piv"		=> array("PIV", "00:0B:6A:17:56:52", null, "ls"),
+	"amd"		=> array("AMD", "00:0C:6E:5A:D0:F2"),
+	"new"		=> array("New", null, "sleep 2s", null, 10),
+	"nop"		=> array("Nop")
 );
 
 $default = "server";
@@ -242,16 +243,33 @@ $actionsURL = array(
 					<div class="mastfoot">
 						<div class="inner">
 							<p>
-								Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a> -
-								<a href="#">Terms of Service</a> -
-								<a href="#">Features</a> -
-								<a href="#">About</a>
+								<b>Created by <a href="http://www.rigon.tk">rigon</a></b> - 
+								Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a> -
+								<a href="#" data-toggle="modal" data-target="#about">About</a>
 							</p>
 						</div>
 					</div>
 
 				</div>
 
+			</div>
+		</div>
+		
+		<!-- About -->
+		<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h3 class="modal-title" id="myModalLabel" class="masthead-brand">Remote <strong class="text-smallcaps">WakeOnLan</strong></h3>
+					</div>
+					<div class="modal-body">
+						...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -301,7 +319,12 @@ $actionsURL = array(
 				}, 75);
 			}
 			
-			function setStage(value, lead, background = "gray", counter = "", drawArc = false, updateHref = true) {
+			function setStage(value, lead, background, counter, drawArc, updateHref) {
+				// Default values for parameters
+				if(background === undefined) background = "gray"; if(counter === undefined) counter = "";
+				if(drawArc === undefined) drawArc = false; if(updateHref === undefined) updateHref = true;
+				
+				
 				$(".power-button .lead").html(lead);
 				$(".power-button a").attr("class", background);
 				if(updateHref) $(".power-button a").attr("href", actionsURL[value]);
@@ -319,10 +342,13 @@ $actionsURL = array(
 			}
 			
 			function powerOn() {
-				if(!hasPowerOn) { turningOn(); hasPowerOn= true; return; }
+				if(!hasPowerOn) { turningOn(); hasPowerOn = true; return; }
 				setStage(0, "Power On", "gray");
 			}
-			function turningOn(animate = true) {
+			function turningOn(animate) {
+				// Default values for parameters
+				if(animate === undefined) animate = true;
+			
 				if(!hasTurningOn || !hasPowerOn) { openLink(); return; }
 				setStage(1, "Turning On", "red", "Loading...", false, false);
 				if(animate) runAnimation(wakeupTime, openLink);
@@ -373,6 +399,7 @@ $actionsURL = array(
 				$(".message").click(function() {
 					alert($(this).html());
 				});
+				
 			}
 		</script>
 	</body>
