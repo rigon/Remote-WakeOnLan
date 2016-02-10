@@ -1,19 +1,68 @@
 <?php
 
-define('WAKEUP_COMMAND', 'sleep 2s #wakeonlan %s');
+/*
+ *  Remote WakeOnLan - a web inferface to manage (power on and shutdown) remote computers
+ *  Copyright (C) 2016  rigon <http://www.rigon.tk>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 
 /*
- * List of MAC addresses
- * id => array(name, MAC address, shutdown command, open address, poweron time)
+ * Command executed to WakeUp the remote computer
  */
+
+define('WAKEUP_COMMAND', 'wakeonlan %s');
+
+
+/*
+ *  List of PCs to manage
+ *    List of computers to manage remotelly. You will need:
+ *    - an ID that will identify the compuer
+ *    - a name that will be shown in the interface
+ *    - a MAC address that will be used to send the magic packages to WakeUp the computer
+ *    - a command when executed will shutdown the remote computer
+ *    - an URL to open when the remote computer is turned on
+ *    - the powerup waiting time that the remote computer will take to turn on
+ *    Only ID and name are mandatory. The other parameters, you can choose not to specify its
+ *    value or, if you need, set it to null. The interface will adapt according to the
+ *    available parameters.
+ * 
+ *    NOTE for shutdown command: we recommend use a SSH connection to shutdown the remote
+ *    computer. This requires some setup to make it work, but fortunatly you can find the
+ *    information that you need here: http://www.rigon.tk/documentation/remote-pc-startupshutdown
+ *
+ *	  Format:
+ *       id  =>  array(name, MAC address, shutdown command, URL to open, powerup waiting time)
+ * 
+ */
+ 
 $list = array(
-	"name"		=> array("Name", "mac address", "command to shutdown", "open url", intval("wakeup time")),
-	"pc2"		=> array("PC2", "mac address", null, "only with open url"),
-	"pc3"		=> array("PC3", "only mac address"),
+	"google"	=> array("Google", "00:00:00:00:00:00", "echo That would be interesting!", "http://www.google.com", 10),
+	"pc2"		=> array("MAC&Open", "mac address", null, "http://www.rigon.tk"),
+	"pc3"		=> array("Only PwrOn", "only mac address"),
+	"pc4"       => array("Only Shtdwn", null, "echo Maybe later I will shutdown..."),
 	"nothing"	=> array("Nothing")
 );
 
-$default = "server";
+
+/*
+ * ID of the default computer
+ */
+$default = "google";
+
 
 
 
@@ -24,7 +73,6 @@ $message = "";
 // Different default selected
 if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 	$default = $_GET['default'];
-
 
 
 /* *******
@@ -54,13 +102,13 @@ else if(isset($_GET['open'])) {
 		exit("Redirecting to $open_url");
 	}
 	else
-		$message = "Redirect not available.";
+		$message = "Open URL not available.";
 }
 
 // Shutdown selected computer
 else if(isset($_GET['shutdown'])) {
 	if(isset($list[$default][2])) {
-		$message .= "Shutting down. Please wait...\n\n";
+		$message .= "Shutting down ".$list[$default][0].". Please wait...\n\n";
 		$shutdown_command = $list[$default][2];
 		
 		exec($shutdown_command, $output);
@@ -70,7 +118,7 @@ else if(isset($_GET['shutdown'])) {
 		$stage = 0;
 	}
 	else
-		$message = "Open URL not available";
+		$message = "Shutdown command not available";
 }
 
 
@@ -129,6 +177,7 @@ $actionsURL = array(
 			
 			.cover-heading {
 				font-size: 4em;
+				padding-top: 30px;
 			}
 			
 			.power-button .lead {
@@ -138,7 +187,7 @@ $actionsURL = array(
 			.power-button {
 				width: 300px;
 				height: 300px;
-				margin: 60px auto 60px auto;
+				margin: 50px auto 60px auto;
 			}
 			
 			.power-button a, .power-button a:hover, .power-button a:focus {
@@ -278,6 +327,7 @@ $actionsURL = array(
 			var hasShutdown = <?php echo (isset($list[$default][2]) ? "true" : "false"); ?>;
 			var hasOpen = <?php echo (isset($list[$default][3]) ? "true" : "false"); ?>;
 			var hasTurningOn = <?php echo (isset($list[$default][4]) ? "true" : "false"); ?>;
+			var hasNoAction = false;
 			
 			var actionsURL = ["<?php echo implode('", "', $actionsURL); ?>"];
 			var wakeupTime = <?php echo (isset($list[$default][4]) ? $list[$default][4] : 0); ?> * 1000;
@@ -341,7 +391,8 @@ $actionsURL = array(
 			}
 			
 			function powerOn() {
-				if(!hasPowerOn) { turningOn(); hasPowerOn = true; return; }
+				if(hasNoAction) return; hasNoAction = true;	// Avoid recursion
+				if(!hasPowerOn) { turningOn(); return; }
 				setStage(0, "Power On", "gray");
 			}
 			function turningOn(animate) {
@@ -396,7 +447,8 @@ $actionsURL = array(
 				});
 				
 				$(".message").click(function() {
-					alert($(this).html());
+					var message = $(this).html();
+					alert(message = "&nbsp;" ? "Nothing to show!" : message);
 				});
 				
 				window.location.hash = "cover-heading";
