@@ -11,7 +11,6 @@
 }
 .message {
 	cursor: pointer;
-	margin-bottom: 100px;
 	color: #fff; /* IE8 proofing */
 	color: rgba(255,255,255,.75);
 	
@@ -59,7 +58,7 @@ body {
   height: 100%;
   background-color: #333;
 }
-body {
+.site-wrapper {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
@@ -107,13 +106,17 @@ body {
 .masthead-nav > li > .btn-group {
   padding-right: 0;
   padding-left: 0;
-  font-size: 16px;
-  font-weight: bold;
   color: #fff; /* IE8 proofing */
   color: rgba(255,255,255,.75);
   border-bottom: 2px solid transparent;
   background-color: transparent;
 }
+.masthead-nav > li > a,
+.masthead-nav > li > .btn-group > .btn {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .masthead-nav > li > a:hover,
 .masthead-nav > li > a:focus,
 .masthead-nav > li > .btn-group:hover,
@@ -124,7 +127,8 @@ body {
 }
 
 .masthead-nav > li > .btn-group > a,
-.masthead-nav > li > .btn-group > .btn {
+.masthead-nav > li > .btn-group > .btn,
+.masthead-nav > li > .btn-group > .btn:focus {
 	color: #fff; /* IE8 proofing */
 	color: rgba(255,255,255,.75);
 	padding-top: 10px;
@@ -148,6 +152,9 @@ body {
 }
 
 
+.masthead-nav > .active > .btn-group > .dropdown-menu {
+	border-top-left-radius: 0px;
+}
 
 /*
  * Cover
@@ -188,7 +195,7 @@ body {
   }
   .cover-container {
     width: 100%; /* Must be percentage or pixels for horizontal alignment */
-    margin-top: 160px;
+    margin-top: 10px;
   }
   
   /* Start the vertical centering */
