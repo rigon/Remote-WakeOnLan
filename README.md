@@ -1,8 +1,18 @@
 # Remote-WakeOnLan
 Web inferface to manage (power on and shutdown) remote computers
 
+## Usage
+
+The complete cycle is:
+ - Power ON
+ - Turning on (will take **waiting time** seconds)
+ - Open (will open the specified URL in a new tab)
+ - Shutdown
+
+Then, the cycle starts over again. If some of the steps is not available, it will be skipped.
+
 ## Configuration
-List of computers to manage remotelly. You will need:
+You can create a list of computers to manage remotelly. You will need per computer:
  - an ID that will identify the compuer
  - a name that will be shown in the interface
  - a MAC address that will be used to send the magic packages to WakeUp the computer
@@ -18,7 +28,7 @@ Format:
 
     id  =>  array(name, MAC address, shutdown command, URL to open, powerup waiting time)
 
-## Note about shutdown command
+### Note about shutdown command
 We recommend use a SSH connection to shutdown the remote
 computer. This requires some setup to make it work, but fortunatly you can find the
-information that you need in [Remote PC Startup/Shutdown](http://www.rigon.tk/documentation/remote-pc-startupshutdown)
+information that you need in [Remote PC Startup/Shutdown](http://www.rigon.tk/documentation/remote-pc-startupshutdown).
