@@ -329,8 +329,8 @@ $actionsURL = array(
 						</ol>
 						<p>Then, the cycle starts over again. If some of the steps is not available, it will be skipped.</p>
 						
-						<h4>List of PCs to manage</h4>
-						<p>You can create a ist of computers to manage remotelly. You will need per computer:</p>
+						<h4>Configuration</h4>
+						<p>You can create a list of computers to manage remotelly. You will need per computer:</p>
 						<ul>
 							<li>an ID that will identify the compuer</li>
 							<li>a name that will be shown in the interface</li>
