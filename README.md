@@ -32,3 +32,14 @@ Format:
 We recommend use a SSH connection to shutdown the remote
 computer. This requires some setup to make it work, but fortunatly you can find the
 information that you need in [Remote PC Startup/Shutdown](http://www.rigon.tk/documentation/remote-pc-startupshutdown).
+
+
+## Screenshots
+
+![screenshot1](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot1.jpg)
+
+![screenshot2](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot2.jpg)
+
+![screenshot3](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot3.jpg)
+
+![screenshot4](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot4.jpg)
