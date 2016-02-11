@@ -22,6 +22,7 @@
 
 /*
  * Command executed to WakeUp the remote computer
+ *   %s is replaced by the MAC address
  */
 
 define('WAKEUP_COMMAND', 'wakeonlan %s');
@@ -29,7 +30,7 @@ define('WAKEUP_COMMAND', 'wakeonlan %s');
 
 /*
  *  List of PCs to manage
- *    List of computers to manage remotelly. You will need:
+ *    You can create a ist of computers to manage remotelly. You will need per computer:
  *    - an ID that will identify the compuer
  *    - a name that will be shown in the interface
  *    - a MAC address that will be used to send the magic packages to WakeUp the computer
@@ -312,7 +313,43 @@ $actionsURL = array(
 						<h3 class="modal-title" id="myModalLabel" class="masthead-brand">Remote <strong class="text-smallcaps">WakeOnLan</strong></h3>
 					</div>
 					<div class="modal-body">
-						...
+						<h4>A web inferface to manage (power on and shutdown) remote computers.</h4>
+						<p>
+							<b>Created by <a href="http://www.rigon.tk">rigon</a></b> - 
+							Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a>
+						</p>
+						<hr>
+						
+						<p>The complete cycle is:</p>
+						<ol>
+							<li>Power ON</li>
+							<li>Turning on (will take <b>waiting time</b> seconds)</li>
+							<li>Open (will open the specified URL in a new tab)</li>
+							<li>Shutdown</li>
+						</ol>
+						<p>Then, the cycle starts over again. If some of the steps is not available, it will be skipped.</p>
+						
+						<h4>List of PCs to manage</h4>
+						<p>You can create a ist of computers to manage remotelly. You will need per computer:</p>
+						<ul>
+							<li>an ID that will identify the compuer</li>
+							<li>a name that will be shown in the interface</li>
+							<li>a MAC address that will be used to send the magic packages to WakeUp the computer</li>
+							<li>a command when executed will shutdown the remote computer</li>
+							<li>an URL to open when the remote computer is turned on</li>
+							<li>the powerup waiting time that the remote computer will take to turn on</li>
+						</ul>
+						<p>
+							Only ID and name are mandatory. The other parameters, you can choose not to specify its
+							value or, if you need, set it to <code>null</code>. The interface will adapt according to the
+							available parameters.
+						</p>
+						<p>
+							<b>NOTE for shutdown command:</b> we recommend use a SSH connection to shutdown the remote
+							computer. This requires some setup to make it work, but fortunatly you can find the
+							information that you need in
+							<a href="http://www.rigon.tk/documentation/remote-pc-startupshutdown" target="_blank">Remote PC Startup/Shutdown</a>.
+						</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -448,7 +485,7 @@ $actionsURL = array(
 				
 				$(".message").click(function() {
 					var message = $(this).html();
-					alert(message = "&nbsp;" ? "Nothing to show!" : message);
+					alert(message == "&nbsp;" ? "Nothing to show!" : message);
 				});
 				
 				window.location.hash = "cover-heading";

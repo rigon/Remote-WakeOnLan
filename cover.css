@@ -31,21 +31,21 @@
 		
 
 /* Links */
-a,
-a:focus,
-a:hover {
-  color: #fff;
+.site-wrapper a,
+.site-wrappera:focus,
+.site-wrapper a:hover {
+	color: #fff;
 }
 
 /* Custom default button */
-.btn-default,
-.btn-default:hover,
-.btn-default:focus,
-.dropdown-menu {
-  color: #333;
-  text-shadow: none; /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
+.masthead-nav .btn-default,
+.masthead-nav .btn-default:hover,
+.masthead-nav .btn-default:focus,
+.masthead-nav .dropdown-menu {
+	color: #333;
+	text-shadow: none; /* Prevent inheritence from `body` */
+	background-color: #fff;
+	border: 1px solid #fff;
 }
 
 
