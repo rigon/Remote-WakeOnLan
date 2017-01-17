@@ -1,0 +1,28 @@
+{
+  "name": "Remote-WakeOnLan",
+  "homepage": "https://github.com/rigon/Remote-WakeOnLan",
+  "authors": [
+    "rigon <ricardompgoncalves@gmail.com>"
+  ],
+  "description": "Web inferface to manage (power on and shutdown) remote computers",
+  "main": "",
+  "keywords": [
+    "remote",
+    "wakeonlan",
+    "poweron",
+    "shutdown"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "bootpopup": "^0.1.3"
+  }
+}

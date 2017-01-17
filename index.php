@@ -160,7 +160,7 @@ $actionsURL = array(
 		<title>Remote WakeOnLan</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="bootstrap.min.css" rel="stylesheet">
+		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
 		<link href="cover.css" rel="stylesheet">
@@ -168,8 +168,9 @@ $actionsURL = array(
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="jquery.min.js"></script>
-		<script src="bootstrap.min.js"></script>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="bower_components/bootpopup/bootpopup.js"></script>
 		
 		<style type="text/css">
 			body {
@@ -292,9 +293,11 @@ $actionsURL = array(
 					<div class="mastfoot">
 						<div class="inner">
 							<p>
+								<h4><a href="#" data-toggle="modal" data-target="#about">About</a></h4>
+							</p>
+							<p>
 								<b>Created by <a href="http://www.rigon.tk">rigon</a></b> - 
-								Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a> -
-								<a href="#" data-toggle="modal" data-target="#about">About</a>
+								Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a>
 							</p>
 						</div>
 					</div>
@@ -352,7 +355,7 @@ $actionsURL = array(
 						</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -485,7 +488,8 @@ $actionsURL = array(
 				
 				$(".message").click(function() {
 					var message = $(this).html();
-					alert(message == "&nbsp;" ? "Nothing to show!" : message);
+					if(message == "&nbsp;") message = "Nothing to show!";
+					bootpopup.alert(message);
 				});
 				
 				window.location.hash = "cover-heading";
