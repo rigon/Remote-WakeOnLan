@@ -156,6 +156,7 @@ $actionsURL = array(
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="bower_components/bootpopup/bootpopup.js"></script>
+		<?php if(RECAPTCHA) { ?><script src='https://www.google.com/recaptcha/api.js' async></script><?php } ?>
 		
 		<style type="text/css">
 			body {
@@ -244,8 +245,8 @@ $actionsURL = array(
 													<li><a href="?default=<?php echo $id; ?>">Select</a></li>
 													
 													<?php if(isset($desc[1]) or isset($desc[2])) { ?><li role="separator" class="divider"></li><?php } ?>
-													<?php if(isset($desc[1])) { ?><li><a href="?wakeup&default=<?php echo $id; ?>">Power ON</a></li><?php } ?>
-													<?php if(isset($desc[2])) { ?><li><a href="?shutdown&default=<?php echo $id; ?>">Shutdown</a></li><?php } ?>
+													<?php if(isset($desc[1])) { ?><li><a class="recaptcha-force" href="?wakeup&default=<?php echo $id; ?>">Power ON</a></li><?php } ?>
+													<?php if(isset($desc[2])) { ?><li><a class="recaptcha-force" href="?shutdown&default=<?php echo $id; ?>">Shutdown</a></li><?php } ?>
 													
 													<?php if(isset($desc[3])) { ?>
 														<li role="separator" class="divider"></li>
@@ -266,7 +267,7 @@ $actionsURL = array(
 						
 						<div class="power-button">
 							<canvas></canvas>
-							<a class="gray" href="<?php echo $actionsURL[$stage]; ?>">
+							<a class="gray recaptcha" href="<?php echo $actionsURL[$stage]; ?>">
 								<p class="lead">Power On</p>
 								<p class="counter"></p>
 							</a>
@@ -398,9 +399,8 @@ $actionsURL = array(
 				if(background === undefined) background = "gray"; if(counter === undefined) counter = "";
 				if(drawArc === undefined) drawArc = false; if(updateHref === undefined) updateHref = true;
 				
-				
 				$(".power-button .lead").html(lead);
-				$(".power-button a").attr("class", background);
+				$(".power-button a").attr("class", background + " recaptcha");
 				if(updateHref) $(".power-button a").attr("href", actionsURL[value]);
 				$(".power-button a").removeAttr("target", "_blank");
 				$(".power-button .counter").html(counter);
@@ -478,6 +478,24 @@ $actionsURL = array(
 				});
 				
 				window.location.hash = "cover-heading";
+				setup_recaptcha();
+			}
+
+			function setup_recaptcha() {
+				<?php if(RECAPTCHA) { ?>
+					$(".recaptcha-force").click(function() {
+						recaptcha($(this).attr("href"));
+					});
+					$(".recaptcha").click(function() {
+						if(state == 0 || state == 3)	// PowerOn and Shutdown
+							recaptcha($(this).attr("href"));
+					});
+
+				<?php } ?>
+			}
+			function recaptcha(url) {
+				console.log(url);
+				//bootpopup();
 			}
 		</script>
 	</body>

@@ -56,6 +56,13 @@
 				border: none;
 				border-bottom: 1px dashed #eee;
 			}
+			#paypal-link {
+				padding-top: 12px;
+				padding-bottom: 12px;
+			}
+			#paypal-link > img {
+				width: 100%;
+			}
 		</style>
     </head>
     <body>
@@ -87,8 +94,9 @@
 						<li><a href="https://github.com/rigon/bootpopup/blob/master/README.md#api">API <small class="glyphicon glyphicon-new-window"></small></a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="https://github.com/rigon/bootpopup"><img src="https://assets-cdn.github.com/favicon.ico" /> View on GitHub</a></li>
 						<li><a href="http://www.rigon.tk">by <u>rigon</u></a></li>
+						<li><a href="https://github.com/rigon/bootpopup"><img src="https://assets-cdn.github.com/favicon.ico" /> Fork on GitHub</a></li>
+						<li><a href="#" id="paypal-link" title="Please donate - Help us to mantain this project!"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -103,7 +111,15 @@
 					<span class="glyphicon glyphicon-download-alt"></span> Download latest
 				</a>
 			</p>
-			<p><small><a href="https://bower.io/search/?q=bootpopup">Available via bower</a></small></p>
+            <p>
+                <img src="https://www.npmjs.com/static/images/touch-icons/favicon-16x16.png">
+                <small><a href="https://www.npmjs.com/package/bootpopup">Available via npm</a></small><br>
+                <img src="https://bower.io/img/bower-logo.svg" width="16">
+                <small><a href="https://bower.io/search/?q=bootpopup">Available via bower</a></small><br>
+                <img src="http://requirejs.org/favicon.png">
+                <small>AMD support: require.js</small>
+            </p>
+            </p>
 		</div>
 
 
@@ -128,6 +144,10 @@
 &lt;script src=&quot;bower_components/bootstrap/dist/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
 &lt;!-- BootPopup --&gt;
 &lt;script src=&quot;bower_components/bootpopup/bootpopup.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+			<p>See the full documentation about how to use BootPopup in the
+				<a href="https://github.com/rigon/bootpopup/blob/master/README.md#api">API section on GitHub <small class="glyphicon glyphicon-new-window"></small></a>
+			</p>
 
 
 			<h1 id="examples">Examples</h1>
@@ -168,38 +188,75 @@
 			<pre><code class="js">bootpopup.prompt("Name");</code></pre>
 			<p><button id="example-prompt-1" class="btn btn-primary">Run example</button></p><hr>
 			
-			<p>A confirm with a custom type of data:</p>
+			<p>A prompt with a custom type of data. This corresponds to <a href="https://www.w3schools.com/tags/att_input_type.asp">HTML input types</a>:</p>
 			<pre><code class="js">bootpopup.prompt("Age", "number");</code></pre>
 			<p><button id="example-prompt-2" class="btn btn-primary">Run example</button></p><hr>
 			
-			<p>A confirm with a custom message:</p>
+			<p>A prompt with a custom message:</p>
 			<pre><code class="js">bootpopup.prompt("Text", null, "Insert a random text:");</code></pre>
 			<p><button id="example-prompt-3" class="btn btn-primary">Run example</button></p><hr>
 			
 			<p>Or if you want a callback without a custom title and message:</p>
-			<pre><code class="js">bootpopup.prompt("Text", function(data,e) { alert(JSON.stringify(data)); });</code></pre>
+			<pre><code class="js">bootpopup.prompt("Text", function(data) { alert(data); });</code></pre>
 			<p><button id="example-prompt-4" class="btn btn-primary">Run example</button></p><hr>
+			
+			<p>You can also request multiple values at same time, providing a list of values to input:</p>
+			<pre><code class="js">bootpopup.prompt([
+        { label: &quot;A text&quot;},
+        { label: &quot;A number&quot;, type: &quot;number&quot;},
+        { label: &quot;A boolean&quot;, type: &quot;checkbox&quot;, name: &quot;boolean&quot;}
+    ],
+    function(data) { alert(JSON.stringify(data)); }
+);</code></pre>
+			<p><button id="example-prompt-5" class="btn btn-primary">Run example</button></p><hr>
 
 
 			<h2 id="customized">Customized dialog</h2>
-			<p>BootPopup is also highly customizable:</p>
+			<p>BootPopup is also highly customizable, you can create a list of items to display very quickly. Then, you can
+				pick up the entered data from the callback very easily:</p>
 			<pre><code class="js">bootpopup({
     title: &quot;Add image&quot;,
+    size: &quot;large&quot;,
+    size_labels: &quot;col-sm-2&quot;,
+    size_inputs: &quot;col-sm-10&quot;,
     content: [
         { p: {text: &quot;Insert image info here:&quot;}},
         { input: {type: &quot;text&quot;, label: &quot;Title&quot;, name: &quot;title&quot;, id: &quot;title&quot;, placeholder: &quot;Description for image&quot;, value: &quot;Woman picking flowers&quot;}},
         { url: {label: &quot;Link&quot;, name: &quot;link&quot;, id: &quot;link&quot;, placeholder: &quot;Hyperlink for image&quot;, value: &quot;http://hmp.me/3lv&quot;}},
+        { checkbox: {label: &quot;Add border to the image&quot;, name: &quot;border&quot;, id: &quot;border&quot;}},
         { button: {name: &quot;button&quot;, value: &quot;Open image&quot;, class: &quot;btn btn-info&quot;, onclick: function() {
                 bootpopup({
                     title: $(&apos;#title&apos;).val(),
-                    content: [ { img: {src: $(&apos;#link&apos;).val()}} ]});
+                    content: [ { img: {src: $(&apos;#link&apos;).val()}} ],
+                    before: function(window) {
+                        if($(&quot;#border&quot;).prop(&quot;checked&quot;))
+                            $(&quot;#image&quot;).attr(&quot;style&quot;, &quot;border: 10px solid red&quot;);
+                    }
+                });
             }
         }}],
-    cancel: function(data,e) { alert(&quot;Cancel&quot;); },
-    ok: function(data,e) { alert(JSON.stringify(data)); },
+    cancel: function(data, array, event) { alert(&quot;Cancel&quot;); },
+    ok: function(data, array, event) { alert(&quot;OK\n&quot; + JSON.stringify(data)); },
     complete: function() { alert(&quot;Complete&quot;); },
 });</code></pre>
 			<p><button id="example-customized-1" class="btn btn-primary">Run example</button></p><hr>
+
+			<p>If the provided functionality is not enough for your case, you can simply mix your HTML:</p>
+			<pre><code class="js">bootpopup({
+	title: &quot;Custom HTML&quot;,
+	content: [
+		&apos;&lt;h1&gt;BootPopup&lt;/h1&gt;&apos;,
+		&apos;&lt;p class=&quot;lead&quot;&gt;Popup dialog boxes for Bootstrap.&lt;/p&gt;&apos;,
+		&apos;&lt;b&gt;BootPopup&lt;/b&gt; is a JavaScript library intended to simplify the task of creating &lt;a href=&quot;#&quot;&gt;Bootstrap modals&lt;/a&gt;&apos;,
+		&apos;&lt;p class=&quot;lead&quot;&gt;Check out the &lt;a href=&quot;#examples&quot; data-scrollto=&quot;#examples&quot;&gt;examples&lt;/a&gt; to see how easy it is!&lt;/p&gt;&apos;,
+		&apos;Give us a rate 1-10:&apos;,
+		{ input: {type: &quot;number&quot;, label: &quot;Rate&quot;, name: &quot;rate&quot;, value: &quot;11&quot;}}],
+	before: function(window) { alert(&quot;Before&quot;); },
+	cancel: function(data, array, event) { alert(&quot;Cancel&quot;); },
+	ok: function(data, array, event) { alert(&quot;OK\n&quot; + JSON.stringify(data)); },
+	complete: function() { alert(&quot;Complete&quot;); },
+});</code></pre>
+			<p><button id="example-customized-2" class="btn btn-primary">Run example</button></p><hr>
 
 		</div> <!-- /container -->
 
@@ -223,25 +280,68 @@
 			$("#example-prompt-1").click(function() { bootpopup.prompt("Name"); });
 			$("#example-prompt-2").click(function() { bootpopup.prompt("Age", "number"); });
 			$("#example-prompt-3").click(function() { bootpopup.prompt("Text", null, "Insert a random text:"); });
-			$("#example-prompt-4").click(function() { bootpopup.prompt("Text", function(data,e) { alert(JSON.stringify(data)); }); });
+			$("#example-prompt-4").click(function() { bootpopup.prompt("Text", function(data) { alert(data); }); });
+			$("#example-prompt-5").click(function() { bootpopup.prompt([
+					{ label: "A text"},
+					{ label: "A number", type: "number"},
+					{ label: "A boolean", type: "checkbox", name: "boolean"}
+				], function(data) { alert(JSON.stringify(data)); }); });
 
 			$("#example-customized-1").click(function() {
 				bootpopup({
 					title: "Add image",
+					size: "large",
+					size_labels: "col-sm-2",
+					size_inputs: "col-sm-10",
 					content: [
 						{ p: {text: "Insert image info here:"}},
 						{ input: {type: "text", label: "Title", name: "title", id: "title", placeholder: "Description for image", value: "Woman picking flowers"}},
 						{ url: {label: "Link", name: "link", id: "link", placeholder: "Hyperlink for image", value: "http://hmp.me/3lv"}},
+						{ checkbox: {label: "Add border to the image", name: "border", id: "border"}},
 						{ button: {name: "button", value: "Open image", class: "btn btn-info", onclick: function() {
 								bootpopup({
 									title: $('#title').val(),
-									content: [ { img: {src: $('#link').val()}} ]});
+									content: [ { img: {src: $('#link').val(), id: "image"}} ],
+									before: function(window) {
+										if($('#border').prop('checked'))
+											$('#image').attr('style', 'border: 10px solid red');
+									}
+								});
 							}
 						}}],
-					cancel: function(data,e) { alert("Cancel"); },
-					ok: function(data,e) { alert(JSON.stringify(data)); },
+					before: function(window) { alert("Before"); },
+					cancel: function(data, array, event) { alert("Cancel"); },
+					ok: function(data, array, event) { alert("OK\n" + JSON.stringify(data)); },
 					complete: function() { alert("Complete"); },
 				});
+			});
+
+			$("#example-customized-2").click(function() {
+				bootpopup({
+					title: "Custom HTML",
+					content: [
+						'<h1>BootPopup</h1>',
+						'<p class="lead">Popup dialog boxes for Bootstrap.</p>',
+						'<b>BootPopup</b> is a JavaScript library intended to simplify the task of creating <a href="#">Bootstrap modals</a>',
+						'<p class="lead">Check out the <a href="#examples" data-scrollto="#examples">examples</a> to see how easy it is!</p>',
+						'Give us a rate 1-10:',
+						{ input: {type: "number", label: "Rate", name: "rate", value: "11"}}],
+					cancel: function(data, array, event) { alert("Cancel"); },
+					ok: function(data, array, event) { alert("OK\n" + JSON.stringify(data)); },
+					complete: function() { alert("Complete"); },
+				});
+			});
+		</script>
+
+		<!-- PayPal Donations -->
+		<form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="VNE5MMV2EA2Z4">
+		</form>
+		<script type="text/javascript">
+			$("#paypal-link").click(function(event) {
+				event.preventDefault();
+				$("#paypal-form").submit();
 			});
 		</script>
     </body>

@@ -32,6 +32,18 @@ define('WAKEUP_COMMAND', 'ether-wake %s');
 define('AUTO_REDIR', false);
 
 /*
+ * Use reCaptcha to perform PowerOn's and Shutdown's
+ * Setup your reCaptcha Keys here: http://www.google.com/recaptcha/admin
+ * See the documentation here: https://developers.google.com/recaptcha/intro
+ *
+ * The keys provided here are only for demonstration. If you want to setup this
+ * application, you need to configure them.
+ */
+define('RECAPTCHA', true);
+define('RECAPTCHA_SITE_KEY', '6LczADMUAAAAAE85bwTc4RHMsc8iccOHoUVoyTHG');
+define('RECAPTCHA_SECRET_KEY', '6LczADMUAAAAALEnnBm5rDiQVacavVZP-MiVxDCg')
+
+/*
  *  List of PCs to manage
  *    You can create a ist of computers to manage remotelly. You will need per computer:
  *    - an ID that will identify the compuer
