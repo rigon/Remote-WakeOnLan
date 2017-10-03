@@ -41,7 +41,7 @@ define('AUTO_REDIR', false);
  */
 define('RECAPTCHA', true);
 define('RECAPTCHA_SITE_KEY', '6LczADMUAAAAAE85bwTc4RHMsc8iccOHoUVoyTHG');
-define('RECAPTCHA_SECRET_KEY', '6LczADMUAAAAALEnnBm5rDiQVacavVZP-MiVxDCg')
+define('RECAPTCHA_SECRET_KEY', '6LczADMUAAAAALEnnBm5rDiQVacavVZP-MiVxDCg');
 
 /*
  *  List of PCs to manage
