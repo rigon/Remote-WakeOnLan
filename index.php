@@ -94,11 +94,12 @@ else if(isset($_GET['turned-on'])) {
 
 // No state selected, check if selected computer is responding
 else {
-	if(isset($selected[3]) and $selected[4] != null) {	// If it has an URL to open
+	if(isset($selected[3]) and $selected[3] != null) {	// If it has an URL to open
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $selected[4]);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 500);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		curl_setopt($ch, CURLOPT_URL, $selected[3]);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 1000);
+		curl_setopt($ch, CURLOPT_TIMEOUT_MS, 2000);
 		$response = curl_exec($ch);
 		curl_close($ch);
 
