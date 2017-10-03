@@ -19,62 +19,19 @@
  *
  */
 
+// Load configutations, please make you configurations in config.php
+require("config.php");
 
-/*
- * Command executed to WakeUp the remote computer
- *   %s is replaced by the MAC address
- */
-
-define('WAKEUP_COMMAND', 'wakeonlan %s');
-
-
-/*
- *  List of PCs to manage
- *    You can create a ist of computers to manage remotelly. You will need per computer:
- *    - an ID that will identify the compuer
- *    - a name that will be shown in the interface
- *    - a MAC address that will be used to send the magic packages to WakeUp the computer
- *    - a command when executed will shutdown the remote computer
- *    - an URL to open when the remote computer is turned on
- *    - the powerup waiting time that the remote computer will take to turn on
- *    Only ID and name are mandatory. The other parameters, you can choose not to specify its
- *    value or, if you need, set it to null. The interface will adapt according to the
- *    available parameters.
- * 
- *    NOTE for shutdown command: we recommend use a SSH connection to shutdown the remote
- *    computer. This requires some setup to make it work, but fortunatly you can find the
- *    information that you need here: http://www.rigon.tk/documentation/remote-pc-startupshutdown
- *
- *	  Format:
- *       id  =>  array(name, MAC address, shutdown command, URL to open, powerup waiting time)
- * 
- */
- 
-$list = array(
-	"google"	=> array("Google", "00:00:00:00:00:00", "echo That would be interesting!", "http://www.google.com", 10),
-	"pc2"		=> array("MAC&Open", "mac address", null, "http://www.rigon.tk"),
-	"pc3"		=> array("Only PwrOn", "only mac address"),
-	"pc4"       => array("Only Shtdwn", null, "echo Maybe later I will shutdown..."),
-	"nothing"	=> array("Nothing")
-);
-
-
-/*
- * ID of the default computer
- */
-$default = "google";
-
-
-
-
+// Init vars
 $stage = 0;
 $message = "";
-
 
 // Different default selected
 if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 	$default = $_GET['default'];
 
+// Selected computer
+$selected = $list[$default];
 
 /* *******
  * Options
@@ -82,8 +39,8 @@ if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 
 // Wakeup selected computer
 if(isset($_GET['wakeup'])) {
-	if(isset($list[$default][1])) {
-		$wakeup_command = sprintf(WAKEUP_COMMAND, $list[$default][1]);
+	if(isset($selected[1])) {
+		$wakeup_command = sprintf(WAKEUP_COMMAND, $selected[1]);
 		exec($wakeup_command, $output);
 		foreach($output as $outputline)
 			$message .= "$outputline\n";
@@ -96,8 +53,8 @@ if(isset($_GET['wakeup'])) {
 
 // Open selected computer
 else if(isset($_GET['open'])) {
-	if(isset($list[$default][3])) {
-		$open_url = $list[$default][3];
+	if(isset($selected[3]) and $selected[3] != null) {
+		$open_url = $selected[3];
 		
 		header("Location: $open_url");
 		exit("Redirecting to $open_url");
@@ -108,9 +65,9 @@ else if(isset($_GET['open'])) {
 
 // Shutdown selected computer
 else if(isset($_GET['shutdown'])) {
-	if(isset($list[$default][2])) {
-		$message .= "Shutting down ".$list[$default][0].". Please wait...\n\n";
-		$shutdown_command = $list[$default][2];
+	if(isset($selected[2])) {
+		$message .= "Shutting down ".$selected[0].". Please wait...\n\n";
+		$shutdown_command = $selected[2];
 		
 		exec($shutdown_command, $output);
 		foreach($output as $outputline)
@@ -129,12 +86,39 @@ else if(isset($_GET['turned-off'])) {
 	$stage = 0;
 }
 
+// The selected computer is turned on
+else if(isset($_GET['turned-on'])) {
+	$message = "The computer is turned on!";
+	$stage = 2;
+}
+
+// No state selected, check if selected computer is responding
+else {
+	if(isset($selected[3]) and $selected[4] != null) {	// If it has an URL to open
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $selected[4]);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 500);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		// The remote computer is turned on
+		if($response !== false) {
+			$stage = 2;
+			$message = "The computer is turned on!";
+
+			// Redirect to server page if the computer is turned on
+			if(AUTO_REDIR) {
+				$open_url = $selected[3];
+				header("Location: $open_url");
+				exit("Redirecting to $open_url");
+			}
+		}
+	}
+}
 
 /* if(preg_match("/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/", $_GET['macaddr']) == 1) */
 
-
-// Selected computer
-$selected = $list[$default];
 
 if($message == "") $message = "&nbsp;";
 
@@ -363,14 +347,14 @@ $actionsURL = array(
 
 		
 		<script type="text/javascript">
-			var hasPowerOn = <?php echo (($list[$default][1]) ? "true" : "false"); ?>;
-			var hasShutdown = <?php echo (isset($list[$default][2]) ? "true" : "false"); ?>;
-			var hasOpen = <?php echo (isset($list[$default][3]) ? "true" : "false"); ?>;
-			var hasTurningOn = <?php echo (isset($list[$default][4]) ? "true" : "false"); ?>;
+			var hasPowerOn = <?php echo (($selected[1]) ? "true" : "false"); ?>;
+			var hasShutdown = <?php echo (isset($selected[2]) ? "true" : "false"); ?>;
+			var hasOpen = <?php echo (isset($selected[3]) ? "true" : "false"); ?>;
+			var hasTurningOn = <?php echo (isset($selected[4]) ? "true" : "false"); ?>;
 			var hasNoAction = false;
 			
 			var actionsURL = ["<?php echo implode('", "', $actionsURL); ?>"];
-			var wakeupTime = <?php echo (isset($list[$default][4]) ? $list[$default][4] : 0); ?> * 1000;
+			var wakeupTime = <?php echo (isset($selected[4]) ? $selected[4] : 0); ?> * 1000;
 			var stage = <?php echo $stage; ?>;
 			var context;
 			
