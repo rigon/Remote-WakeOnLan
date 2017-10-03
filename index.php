@@ -156,7 +156,7 @@ $actionsURL = array(
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="bower_components/bootpopup/bootpopup.js"></script>
-		<?php if(RECAPTCHA) { ?><script src='https://www.google.com/recaptcha/api.js' async></script><?php } ?>
+		<?php if(RECAPTCHA) { ?><script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script><?php } ?>
 		
 		<style type="text/css">
 			body {
@@ -484,18 +484,45 @@ $actionsURL = array(
 			function setup_recaptcha() {
 				<?php if(RECAPTCHA) { ?>
 					$(".recaptcha-force").click(function() {
-						recaptcha($(this).attr("href"));
+						return recaptcha($(this).attr("href"));
 					});
 					$(".recaptcha").click(function() {
 						if(stage == 0 || stage == 3)	// PowerOn and Shutdown
-							recaptcha($(this).attr("href"));
+							return recaptcha($(this).attr("href"));
+						return true;
 					});
 
 				<?php } ?>
 			}
+
+			var recaptchaButtons;
 			function recaptcha(url) {
-				console.log(url);
-				//bootpopup();
+				bootpopup({
+					id: "recaptcha-form",
+					title: "Confirm your are not a bot",
+					before: function(diag) {
+						grecaptcha.render('recaptcha', {
+							'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
+							'callback' : function() {
+								recaptchaButtons.attr("disabled", false);
+							}
+						});
+						
+						recaptchaButtons = diag.find(".modal-footer .btn-primary");
+						recaptchaButtons.attr("disabled", true);
+					},
+					content: [ '<div id="recaptcha"></div>' ],
+					ok: function(data) {
+						console.log("posting");
+						console.log(url);
+						console.log(data);
+						$.post(url, data);
+					}
+				});
+				return false;
+			}
+			function recaptchaReady() {
+				recaptchaButtons.attr("disabled", false);
 			}
 		</script>
 	</body>
