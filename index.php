@@ -487,7 +487,7 @@ $actionsURL = array(
 						recaptcha($(this).attr("href"));
 					});
 					$(".recaptcha").click(function() {
-						if(state == 0 || state == 3)	// PowerOn and Shutdown
+						if(stage == 0 || stage == 3)	// PowerOn and Shutdown
 							recaptcha($(this).attr("href"));
 					});
 
@@ -500,4 +500,3 @@ $actionsURL = array(
 		</script>
 	</body>
 </html>
-
