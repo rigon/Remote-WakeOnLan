@@ -2,7 +2,7 @@
 
 > Web inferface to manage (power on and shutdown) remote computers.
 
-[Homepage](http://www.rigon.tk/main-page/remote-wakeonlan) - [Download](https://github.com/rigon/Remote-WakeOnLan/archive/master.zip) - [Demo Version](http://www.rigon.tk/remote-wakeonlan)
+[Homepage](http://www.rigon.tk/remote-wakeonlan) - [Download](https://github.com/rigon/Remote-WakeOnLan/archive/master.zip) - [Demo Version](http://www.rigon.tk/remote-wakeonlan)
 
 ## Usage
 
@@ -39,10 +39,10 @@ information that you need in [Remote PC Startup/Shutdown](http://www.rigon.tk/do
 
 ## Screenshots
 
-![screenshot1](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot1.jpg)
+![screenshot1](http://www.rigon.tk/files/remote-wakeonlan/screenshot1.jpg)
 
-![screenshot2](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot2.jpg)
+![screenshot2](http://www.rigon.tk/files/remote-wakeonlan/screenshot2.jpg)
 
-![screenshot3](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot3.jpg)
+![screenshot3](http://www.rigon.tk/files/remote-wakeonlan/screenshot3.jpg)
 
-![screenshot4](http://www.rigon.tk/main-page/files/remote-wakeonlan/screenshot4.jpg)
+![screenshot4](http://www.rigon.tk/files/remote-wakeonlan/screenshot4.jpg)
