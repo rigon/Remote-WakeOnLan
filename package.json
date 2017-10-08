@@ -1,0 +1,24 @@
+{
+  "name": "remote-wakeonlan",
+  "version": "1.2.0",
+  "description": "Web inferface to manage (power on and shutdown) remote computers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rigon/Remote-WakeOnLan.git"
+  },
+  "keywords": [
+    "remote",
+    "wakeonlan",
+    "poweron",
+    "shutdown"
+  ],
+  "author": "rigon <ricardompgoncalves@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rigon/Remote-WakeOnLan/issues"
+  },
+  "homepage": "https://github.com/rigon/Remote-WakeOnLan#readme",
+  "dependencies": {
+    "bootpopup": "^1.4.1"
+  }
+}
