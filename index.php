@@ -145,7 +145,7 @@ $actionsURL = array(
 		<title>Remote WakeOnLan</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
 		<link href="cover.css" rel="stylesheet">
@@ -153,9 +153,9 @@ $actionsURL = array(
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script src="bower_components/bootpopup/bootpopup.js"></script>
+		<script src="node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="node_modules/bootpopup/bootpopup.min.js"></script>
 		<?php if(RECAPTCHA) { ?><script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script><?php } ?>
 		
 		<style type="text/css">
@@ -495,28 +495,27 @@ $actionsURL = array(
 				<?php } ?>
 			}
 
-			var recaptchaButtons;
 			function recaptcha(url) {
-				bootpopup({
+				var recaptchaWindow = bootpopup({
 					id: "recaptcha-form",
 					title: "Confirm your are not a bot",
+					content: [ '<div id="recaptcha"></div>' ],
 					before: function(diag) {
 						grecaptcha.render('recaptcha', {
 							'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
 							'callback' : function() {
-								recaptchaButtons.attr("disabled", false);
+								recaptchaWindow.btnOk.attr("disabled", false);
+								recaptchaWindow.form.submit();
 							}
 						});
-						
-						recaptchaButtons = diag.find(".modal-footer .btn-primary");
-						recaptchaButtons.attr("disabled", true);
+						diag.form.attr("action", url);
+						diag.form.attr("method", "post");
 					},
-					content: [ '<div id="recaptcha"></div>' ],
+					submit: function() {
+						return true;
+					},
 					ok: function(data) {
-						console.log("posting");
-						console.log(url);
-						console.log(data);
-						$.post(url, data);
+						recaptchaWindow.form.submit();
 					}
 				});
 				return false;
