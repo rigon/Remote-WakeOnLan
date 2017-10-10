@@ -33,13 +33,42 @@ if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 // Selected computer
 $selected = $list[$default];
 
+// reCaptcha check
+$recaptcha = true;
+if(RECAPTCHA === true) {
+	if(isset($_POST['g-recaptcha-response'])) {
+		$url = 'https://www.google.com/recaptcha/api/siteverify';
+		$data = array(
+			'secret' => RECAPTCHA_SECRET_KEY,
+			'response' => $_POST['g-recaptcha-response']);
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($data)));
+		$result = file_get_contents($url, false, stream_context_create($options));
+
+		var_dump($result);
+		$recaptcha =		// reCaptcha is valid if
+			$result !== FALSE and			// result is a valid response and
+			isset($result['success']) and	// "success" is defined
+			$result['success'] === true;	// and is true
+	}
+	else
+		$recaptcha = false;
+}
+
 /* *******
  * Options
  */
 
 // Wakeup selected computer
 if(isset($_GET['wakeup'])) {
-	if(isset($selected[1])) {
+	// Check reCaptcha
+	if(!$recaptcha)
+		$message = "Wrong reCaptcha!";
+	// If has MAC address
+	else if(isset($selected[1])) {
 		$wakeup_command = sprintf(WAKEUP_COMMAND, $selected[1]);
 		exec($wakeup_command, $output);
 		foreach($output as $outputline)
@@ -53,7 +82,8 @@ if(isset($_GET['wakeup'])) {
 
 // Open selected computer
 else if(isset($_GET['open'])) {
-	if(isset($selected[3]) and $selected[3] != null) {
+	// If has URL to open
+	if(isset($selected[3])) {
 		$open_url = $selected[3];
 		
 		header("Location: $open_url");
@@ -65,7 +95,11 @@ else if(isset($_GET['open'])) {
 
 // Shutdown selected computer
 else if(isset($_GET['shutdown'])) {
-	if(isset($selected[2])) {
+	// Check reCaptcha
+	if(!$recaptcha)
+		$message = "Wrong reCaptcha!";
+	// If has shutdown commnad
+	else if(isset($selected[2])) {
 		$message .= "Shutting down ".$selected[0].". Please wait...\n\n";
 		$shutdown_command = $selected[2];
 		
@@ -496,7 +530,7 @@ $actionsURL = array(
 			}
 
 			function recaptcha(url) {
-				var recaptchaWindow = bootpopup({
+				bootpopup({
 					id: "recaptcha-form",
 					title: "Confirm your are not a bot",
 					content: [ '<div id="recaptcha"></div>' ],
@@ -504,12 +538,13 @@ $actionsURL = array(
 						grecaptcha.render('recaptcha', {
 							'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
 							'callback' : function() {
-								recaptchaWindow.btnOk.attr("disabled", false);
-								recaptchaWindow.form.submit();
+								diag.btnOk.attr("disabled", false);
+								diag.form.submit();
 							}
 						});
 						diag.form.attr("action", url);
 						diag.form.attr("method", "post");
+						diag.btnOk.attr("disabled", true);
 					},
 					submit: function() {
 						return true;
@@ -519,9 +554,6 @@ $actionsURL = array(
 					}
 				});
 				return false;
-			}
-			function recaptchaReady() {
-				recaptchaButtons.attr("disabled", false);
 			}
 		</script>
 	</body>
