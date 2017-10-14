@@ -127,7 +127,7 @@ else if(isset($_GET['turned-on'])) {
 
 // No state selected, check if selected computer is responding
 else {
-	if(isset($selected[3]) and $selected[3] != null) {	// If it has an URL to open
+	if(isset($selected[3])) {	// If it has an URL to open
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $selected[3]);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -485,9 +485,8 @@ $actionsURL = array(
 				}
 				
 				$(".power-button a").click(function() {
-					console.log(stage);
 					if(stage == 0 || stage == 3)	// PowerOn and Shutdown
-					 	return recaptcha($(this).attr("href"), nextStage);
+						return recaptcha($(this).attr("href"), nextStage);
 					return nextStage();
 				});
 
