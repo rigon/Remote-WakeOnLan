@@ -501,7 +501,7 @@ $actionsURL = array(
 								turningOn(false);
 							break;
 						case 2:
-							//window.open($(".power-button a").attr("href"), "_blank");
+							window.open($(".power-button a").attr("href"), "_blank");
 							shutdown();
 							return false;
 						case 3:
