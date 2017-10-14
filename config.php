@@ -66,8 +66,8 @@ define('RECAPTCHA_SECRET_KEY', '6LczADMUAAAAALEnnBm5rDiQVacavVZP-MiVxDCg');
  */
  
 $list = array(
-	"google"	=> array("Google", "00:00:00:00:00:00", "echo That would be interesting!", "http://www.google.com", 10),
-	"pc2"		=> array("MAC&Open", "mac address", null, "http://www.rigon.tk"),
+	"google"	=> array("Google", "00:00:00:00:00:00", "echo That would be interesting!", "https://www.google.com", 10),
+	"pc2"		=> array("MAC&Open", "mac address", null, "https://www.rigon.tk"),
 	"pc3"		=> array("Only PwrOn", "only mac address"),
 	"pc4"       => array("Only Shtdwn", null, "echo Maybe later I will shutdown..."),
 	"nothing"	=> array("Nothing")

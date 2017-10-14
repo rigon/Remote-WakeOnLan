@@ -164,8 +164,7 @@ $actionsURL = array(
 	"?open&default=$default",
 	"?shutdown&default=$default");
 
-?>
-<!-- saved from url=(0014)about:internet -->
+?><!-- saved from url=(0014)about:internet -->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
