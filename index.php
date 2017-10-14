@@ -47,8 +47,7 @@ if(RECAPTCHA === true) {
 				'method'  => 'POST',
 				'content' => http_build_query($data)));
 		$result = file_get_contents($url, false, stream_context_create($options));
-
-		var_dump($result);
+		
 		$recaptcha =		// reCaptcha is valid if
 			$result !== FALSE and			// result is a valid response and
 			isset($result['success']) and	// "success" is defined
@@ -488,6 +487,13 @@ $actionsURL = array(
 				}
 				
 				$(".power-button a").click(function() {
+					console.log(stage);
+					if(stage == 0 || stage == 3)	// PowerOn and Shutdown
+					 	return recaptcha($(this).attr("href"), nextStage);
+					return nextStage();
+				});
+
+				function nextStage() {
 					$(".message").html("&nbsp;");
 					switch(stage) {
 						case 0:
@@ -495,64 +501,60 @@ $actionsURL = array(
 								turningOn(false);
 							break;
 						case 2:
-							window.open($(".power-button a").attr("href"), "_blank");
+							//window.open($(".power-button a").attr("href"), "_blank");
 							shutdown();
 							return false;
 						case 3:
 							$(".power-button .counter").html("Loading...");
 							break;
 					}
-				});
+				}
 				
 				$(".message").click(function() {
 					var message = $(this).html();
 					if(message == "&nbsp;") message = "Nothing to show!";
 					bootpopup.alert(message);
 				});
+
+				// Show window to solve captcha
+				$(".recaptcha-force").click(function() {
+					return recaptcha($(this).attr("href"), function() {});
+				});
 				
 				window.location.hash = "cover-heading";
-				setup_recaptcha();
 			}
 
-			function setup_recaptcha() {
+			function recaptcha(url, callback) {
 				<?php if(RECAPTCHA) { ?>
-					$(".recaptcha-force").click(function() {
-						return recaptcha($(this).attr("href"));
+					bootpopup({
+						id: "recaptcha-form",
+						title: "Confirm your are not a bot",
+						content: [ '<div id="recaptcha"></div>' ],
+						before: function(diag) {
+							grecaptcha.render('recaptcha', {
+								'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
+								'callback' : function() {
+									diag.btnOk.attr("disabled", false);
+									diag.form.submit();
+								}
+							});
+							diag.form.attr("action", url);
+							diag.form.attr("method", "post");
+							diag.btnOk.attr("disabled", true);
+						},
+						submit: function() {
+							callback();
+							return true;
+						},
+						ok: function(data) {
+							recaptchaWindow.form.submit();
+						}
 					});
-					$(".recaptcha").click(function() {
-						if(stage == 0 || stage == 3)	// PowerOn and Shutdown
-							return recaptcha($(this).attr("href"));
-						return true;
-					});
-
+					return false;
+				<?php } else { ?>
+					callback();
+					return true;
 				<?php } ?>
-			}
-
-			function recaptcha(url) {
-				bootpopup({
-					id: "recaptcha-form",
-					title: "Confirm your are not a bot",
-					content: [ '<div id="recaptcha"></div>' ],
-					before: function(diag) {
-						grecaptcha.render('recaptcha', {
-							'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
-							'callback' : function() {
-								diag.btnOk.attr("disabled", false);
-								diag.form.submit();
-							}
-						});
-						diag.form.attr("action", url);
-						diag.form.attr("method", "post");
-						diag.btnOk.attr("disabled", true);
-					},
-					submit: function() {
-						return true;
-					},
-					ok: function(data) {
-						recaptchaWindow.form.submit();
-					}
-				});
-				return false;
 			}
 		</script>
 	</body>
