@@ -277,8 +277,8 @@ $actionsURL = array(
 													<li><a href="?default=<?php echo $id; ?>">Select</a></li>
 													
 													<?php if(isset($desc[1]) or isset($desc[2])) { ?><li role="separator" class="divider"></li><?php } ?>
-													<?php if(isset($desc[1])) { ?><li><a class="recaptcha-force" href="?wakeup&default=<?php echo $id; ?>">Power ON</a></li><?php } ?>
-													<?php if(isset($desc[2])) { ?><li><a class="recaptcha-force" href="?shutdown&default=<?php echo $id; ?>">Shutdown</a></li><?php } ?>
+													<?php if(isset($desc[1])) { ?><li><a class="recaptcha" href="?wakeup&default=<?php echo $id; ?>">Power ON</a></li><?php } ?>
+													<?php if(isset($desc[2])) { ?><li><a class="recaptcha" href="?shutdown&default=<?php echo $id; ?>">Shutdown</a></li><?php } ?>
 													
 													<?php if(isset($desc[3])) { ?>
 														<li role="separator" class="divider"></li>
@@ -310,9 +310,7 @@ $actionsURL = array(
 
 					<div class="mastfoot">
 						<div class="inner">
-							<p>
-								<h4><a href="#" data-toggle="modal" data-target="#about">About</a></h4>
-							</p>
+							<h4><a href="#" data-toggle="modal" data-target="#about">About</a></h4>
 							<p>
 								<b>Created by <a href="http://www.rigon.tk">rigon</a></b> - 
 								Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a>
@@ -331,7 +329,7 @@ $actionsURL = array(
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h3 class="modal-title" id="myModalLabel" class="masthead-brand">Remote <strong class="text-smallcaps">WakeOnLan</strong></h3>
+						<h3 class="modal-title" id="myModalLabel">Remote <strong class="text-smallcaps">WakeOnLan</strong></h3>
 					</div>
 					<div class="modal-body">
 						<h4>A web inferface to manage (power on and shutdown) remote computers.</h4>
@@ -517,7 +515,7 @@ $actionsURL = array(
 				});
 
 				// Show window to solve captcha
-				$(".recaptcha-force").click(function() {
+				$(".recaptcha").click(function() {
 					return recaptcha($(this).attr("href"), function() {});
 				});
 				
