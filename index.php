@@ -299,7 +299,7 @@ $actionsURL = array(
 						
 						<div class="power-button">
 							<canvas></canvas>
-							<a class="gray recaptcha" href="<?php echo $actionsURL[$stage]; ?>">
+							<a class="gray" href="<?php echo $actionsURL[$stage]; ?>">
 								<p class="lead">Power On</p>
 								<p class="counter"></p>
 							</a>
@@ -430,7 +430,7 @@ $actionsURL = array(
 				if(drawArc === undefined) drawArc = false; if(updateHref === undefined) updateHref = true;
 				
 				$(".power-button .lead").html(lead);
-				$(".power-button a").attr("class", background + " recaptcha");
+				$(".power-button a").attr("class", background);
 				if(updateHref) $(".power-button a").attr("href", actionsURL[value]);
 				$(".power-button a").removeAttr("target", "_blank");
 				$(".power-button .counter").html(counter);
@@ -523,10 +523,11 @@ $actionsURL = array(
 
 			function recaptcha(url, callback) {
 				<?php if(RECAPTCHA) { ?>
-					bootpopup({
-						id: "recaptcha-form",
+					var recaptchaWindow = bootpopup({
 						title: "Confirm your are not a bot",
-						content: [ '<div id="recaptcha"></div>' ],
+						content: [
+							'<p>Please solve the reCaptcha:</p>',
+							'<div id="recaptcha"></div>' ],
 						before: function(diag) {
 							grecaptcha.render('recaptcha', {
 								'sitekey' : '<?php echo RECAPTCHA_SITE_KEY; ?>',
