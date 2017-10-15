@@ -55,7 +55,7 @@ if(RECAPTCHA === true) {
 		if($result !== FALSE) {		// result is a valid response and
 			$result_json = json_decode($result);	// decode result
 			// "success" is defined and is true
-			if(isset($result['success']) and $result['success'] === true)
+			if(isset($result_json['success']) and $result_json['success'] === true)
 				$recaptcha = true;
 		}
 	}
