@@ -53,7 +53,7 @@ if(RECAPTCHA === true) {
 		curl_close($ch);
 		
 		if($result !== FALSE) {		// result is a valid response and
-			$result_json = json_decode($result);	// decode result
+			$result_json = json_decode($result, true);	// decode result
 			// "success" is defined and is true
 			if(isset($result_json['success']) and $result_json['success'] === true)
 				$recaptcha = true;
