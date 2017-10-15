@@ -34,27 +34,31 @@ if(isset($_GET['default']) and array_key_exists($_GET['default'], $list))
 $selected = $list[$default];
 
 // reCaptcha check
-$recaptcha = true;
+$recaptcha = !RECAPTCHA;
 if(RECAPTCHA === true) {
 	if(isset($_POST['g-recaptcha-response'])) {
 		$url = 'https://www.google.com/recaptcha/api/siteverify';
-		$data = array(
-			'secret' => RECAPTCHA_SECRET_KEY,
-			'response' => $_POST['g-recaptcha-response']);
-		$options = array(
-			'http' => array(
-				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-				'method'  => 'POST',
-				'content' => http_build_query($data)));
-		$result = file_get_contents($url, false, stream_context_create($options));
+		$secret = RECAPTCHA_SECRET_KEY;
+		$response = $_POST['g-recaptcha-response'];
+		//open connection
+		$ch = curl_init();
+		//set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "secret=$secret&response=$response");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		//execute post
+		$result = curl_exec($ch);
+		//close connection
+		curl_close($ch);
 		
-		$recaptcha =		// reCaptcha is valid if
-			$result !== FALSE and			// result is a valid response and
-			isset($result['success']) and	// "success" is defined
-			$result['success'] === true;	// and is true
+		if($result !== FALSE) {		// result is a valid response and
+			$result_json = json_decode($result);	// decode result
+			// "success" is defined and is true
+			if(isset($result['success']) and $result['success'] === true)
+				$recaptcha = true;
+		}
 	}
-	else
-		$recaptcha = false;
 }
 
 /* *******
