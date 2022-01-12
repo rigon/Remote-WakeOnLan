@@ -336,9 +336,10 @@ $actionsURL = array(
 						<h3 class="modal-title" id="myModalLabel">Remote <strong class="text-smallcaps">WakeOnLan</strong></h3>
 					</div>
 					<div class="modal-body">
-						<h4>A web inferface to manage (power on and shutdown) remote computers.</h4>
+						<h4>A web interface to manage (power on and shutdown) remote computers.</h4>
 						<p>
-							<b>Created by <a href="http://www.rigon.tk">rigon</a></b> - 
+							<b>Created by <a href="https://www.rigon.tk">rigon</a></b> - 
+							<a href="https://github.com/rigon/Remote-WakeOnLan">GitHub Project</a> -
 							Template by <a href="https://twitter.com/mdo">@mdo</a>, <a href="http://getbootstrap.com">Bootstrap</a>
 						</p>
 						<hr>
@@ -353,9 +354,9 @@ $actionsURL = array(
 						<p>Then, the cycle starts over again. If some of the steps is not available, it will be skipped.</p>
 						
 						<h4>Configuration</h4>
-						<p>You can create a list of computers to manage remotelly. You will need per computer:</p>
+						<p>You can create a list of computers to manage remotely. You will need per computer:</p>
 						<ul>
-							<li>an ID that will identify the compuer</li>
+							<li>an ID that will identify the computer</li>
 							<li>a name that will be shown in the interface</li>
 							<li>a MAC address that will be used to send the magic packages to WakeUp the computer</li>
 							<li>a command when executed will shutdown the remote computer</li>
@@ -369,9 +370,9 @@ $actionsURL = array(
 						</p>
 						<p>
 							<b>NOTE for shutdown command:</b> we recommend use a SSH connection to shutdown the remote
-							computer. This requires some setup to make it work, but fortunatly you can find the
+							computer. This requires some setup to make it work, but fortunately you can find the
 							information that you need in
-							<a href="http://www.rigon.tk/documentation/remote-pc-startupshutdown" target="_blank">Remote PC Startup/Shutdown</a>.
+							<a href="https://docs.rigon.tk/remote-pc-startupshutdown" target="_blank">Remote PC Startup/Shutdown</a>.
 						</p>
 					</div>
 					<div class="modal-footer">
