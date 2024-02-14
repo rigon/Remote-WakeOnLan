@@ -2,7 +2,7 @@
 
 > Web interface to manage (power on and shutdown) remote computers
 
-[GitHub Project](https://github.com/rigon/Remote-WakeOnLan) - [Download](https://github.com/rigon/Remote-WakeOnLan/archive/master.zip) - [Demo Version](https://www.rigon.tk/files/remote-wakeonlan/Remote-WakeOnLan/index.php)
+[GitHub Project](https://github.com/rigon/Remote-WakeOnLan) - [Download](https://github.com/rigon/Remote-WakeOnLan/archive/master.zip) - [Demo Version](https://remote-wakeonlan.rigon.uk/)
 
 ## Usage
 
@@ -32,15 +32,15 @@ Format:
     id  =>  array(name, MAC address, shutdown command, URL to open, powerup waiting time)
 
 ### Note about shutdown command
-We recommend use a SSH connection to shutdown the remote computer. This requires some setup to make it work, but fortunately you can find the information that you need in [Remote PC Startup/Shutdown](https://docs.rigon.tk/remote-pc-startupshutdown).
+We recommend use a SSH connection to shutdown the remote computer. This requires some setup to make it work, but fortunately you can find the information that you need in [Remote PC Startup/Shutdown](https://docs.rigon.uk/remote-pc-startupshutdown).
 
 
 ## Screenshots
 
-![screenshot1](https://www.rigon.tk/files/remote-wakeonlan/screenshot1.jpg)
+![screenshot1](screenshots/screenshot1.jpg)
 
-![screenshot2](https://www.rigon.tk/files/remote-wakeonlan/screenshot2.jpg)
+![screenshot2](screenshotsscreenshot2.jpg)
 
-![screenshot3](https://www.rigon.tk/files/remote-wakeonlan/screenshot3.jpg)
+![screenshot3](screenshots/screenshot3.jpg)
 
-![screenshot4](https://www.rigon.tk/files/remote-wakeonlan/screenshot4.jpg)
+![screenshot4](screenshots/screenshot4.jpg)
