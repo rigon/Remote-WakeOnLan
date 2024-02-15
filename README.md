@@ -39,7 +39,7 @@ We recommend use a SSH connection to shutdown the remote computer. This requires
 
 ![screenshot1](screenshots/screenshot1.jpg)
 
-![screenshot2](screenshotsscreenshot2.jpg)
+![screenshot2](screenshots/screenshot2.jpg)
 
 ![screenshot3](screenshots/screenshot3.jpg)
 
